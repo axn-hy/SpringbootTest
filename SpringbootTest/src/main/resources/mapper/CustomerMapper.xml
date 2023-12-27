@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.study.hhy.mapper.CustomerMapper" >
+  <resultMap id="BaseResultMap" type="com.study.hhy.pojo.Customer" >
+    <id column="cid" property="cid" jdbcType="INTEGER" />
+    <result column="c_name" property="cName" jdbcType="VARCHAR" />
+    <result column="c_age" property="cAge" jdbcType="INTEGER" />
+    <result column="c_gnder" property="cGnder" jdbcType="VARCHAR" />
+
+  </resultMap>
+  <sql id="Base_Column_List" >
+    cid, c_name, c_age, c_gnder, rid
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from tb_customer
+    where cid = #{cid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from tb_customer
+    where cid = #{cid,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.study.hhy.pojo.Customer" >
+    insert into tb_customer (cid, c_name, c_age, 
+      c_gnder, rid)
+    values (#{cid,jdbcType=INTEGER}, #{cName,jdbcType=VARCHAR}, #{cAge,jdbcType=INTEGER}, 
+      #{cGnder,jdbcType=VARCHAR}, #{rid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.study.hhy.pojo.Customer" >
+    insert into tb_customer
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        cid,
+      </if>
+      <if test="cName != null" >
+        c_name,
+      </if>
+      <if test="cAge != null" >
+        c_age,
+      </if>
+      <if test="cGnder != null" >
+        c_gnder,
+      </if>
+      <if test="rid != null" >
+        rid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="cid != null" >
+        #{cid,jdbcType=INTEGER},
+      </if>
+      <if test="cName != null" >
+        #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cAge != null" >
+        #{cAge,jdbcType=INTEGER},
+      </if>
+      <if test="cGnder != null" >
+        #{cGnder,jdbcType=VARCHAR},
+      </if>
+      <if test="rid != null" >
+        #{rid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.study.hhy.pojo.Customer" >
+    update tb_customer
+    <set >
+      <if test="cName != null" >
+        c_name = #{cName,jdbcType=VARCHAR},
+      </if>
+      <if test="cAge != null" >
+        c_age = #{cAge,jdbcType=INTEGER},
+      </if>
+      <if test="cGnder != null" >
+        c_gnder = #{cGnder,jdbcType=VARCHAR},
+      </if>
+      <if test="rid != null" >
+        rid = #{rid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.study.hhy.pojo.Customer" >
+    update tb_customer
+    set c_name = #{cName,jdbcType=VARCHAR},
+      c_age = #{cAge,jdbcType=INTEGER},
+      c_gnder = #{cGnder,jdbcType=VARCHAR},
+      rid = #{rid,jdbcType=INTEGER}
+    where cid = #{cid,jdbcType=INTEGER}
+  </update>
+  <select id="selectRoleByCid" parameterType="java.lang.Integer" resultType="com.study.hhy.pojo.Customer">
+    SELECT cid,c_name as cName,c_age as cAge,c_gnder as cGnder,c.rid,r.r_name as rName
+    FROM tb_customer c ,tb_role r
+    WHERE c.rid=r.rid
+    AND c.cid=#{cid}
+  </select>
+</mapper>
